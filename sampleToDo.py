@@ -5,17 +5,17 @@ sg.theme('DarkBrown1')
 
 MAX_TODO = 10  #最大で10個
 
-todo_list = [[sg.Checkbox("",enable_events=True), sg.Text('',key=f'-todolist{i+1}-'),] for i in range(MAX_TODO)]
+todo_list = [[sg.Checkbox("",key=f'-ch{i+1}-'), sg.Text('',key=f'-todolist{i+1}-'),] for i in range(MAX_TODO)]
 
 lay_1 = [[sg.Text('just do it !')],
          [sg.Button('追加'),sg.Input(key='-input-', size=(30,1))],
           ]
 
-lay_2 = [[sg.Text('やりたいことリスト')],
-         [sg.Column(todo_list, key='-todo list-'),]]
-
+lay_2 = [[sg.Text('やりたいことリスト'),sg.Button('削除',key='-delete-')],
+         [sg.Column(todo_list, key='-todo list-'),],
+         ]
 layout = [[sg.Frame('group1',lay_1, vertical_alignment='top'),
-          sg.Frame('group2', size=(500,500), key='-list-', layout=lay_2)]
+          sg.Frame('group2', size=(500,500), key='-list-', layout=lay_2)],
            ]
 
 
@@ -32,6 +32,12 @@ while True:
             if window[f'-todolist{i+1}-'].get() == '':
                 window[f'-todolist{i+1}-'].update(do)
                 break
+    if event == '-delete-':
+        for i in range(MAX_TODO):
+            if window[f'-ch{i+1}-'].get():
+                window[f'-todolist{i+1}-'].update('')
+                window[f'-ch{i+1}-'].update(False)
+
 
 
 window.close()

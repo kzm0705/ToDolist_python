@@ -3,24 +3,19 @@ import os
 
 sg.theme('DarkBrown1')
 
-MAX_TODO = 10 * 2
+MAX_TODO = 10  #最大で10個
 
-list_todo = [[sg.Text('', key='=output=')] for i in range(10 + 1)]
-
-def todo_input(text):
-    list_todo.append([text])
-
-
+todo_list = [[sg.Checkbox("",enable_events=True), sg.Text('',key=f'-todolist{i+1}-'),] for i in range(MAX_TODO)]
 
 lay_1 = [[sg.Text('just do it !')],
          [sg.Button('追加'),sg.Input(key='-input-', size=(30,1))],
           ]
 
 lay_2 = [[sg.Text('やりたいことリスト')],
-         [sg.Text('', key='-output-')]]
+         [sg.Column(todo_list, key='-todo list-'),]]
 
 layout = [[sg.Frame('group1',lay_1, vertical_alignment='top'),
-           sg.Frame('', size=(500,500), layout= lay_2, key='-list-')],
+          sg.Frame('group2', size=(500,500), key='-list-', layout=lay_2)]
            ]
 
 
@@ -33,6 +28,10 @@ while True:
         break
     if event == '追加':
         do = window['-input-'].get()
-        window['-output-'].update(do)
+        for i in range(MAX_TODO):
+            if window[f'-todolist{i+1}-'].get() == '':
+                window[f'-todolist{i+1}-'].update(do)
+                break
+
 
 window.close()

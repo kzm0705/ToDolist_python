@@ -56,6 +56,12 @@ while True:
                         do = window[f'-todolist{i+1}-'].get()
                         status = value[f'-status{i+1}-']
                         f.write(f'{do},{status}\n')
+        if value['-filesave-'] == '読み込み':
+            with open('todo.txt', 'r', encoding='utf-8') as f:
+                for i, line in enumerate(f):
+                    do, status = line.strip().split(',')
+                    window[f'-todolist{i+1}-'].update(do)
+                    window[f'-status{i+1}-'].update(status)
 
 
 window.close()
